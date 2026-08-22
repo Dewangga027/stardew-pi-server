@@ -27,6 +27,125 @@
 - Do not make unnecessary changes to networking, SSH, or other administration paths.
 - Prefer simple and maintainable solutions over unnecessary infrastructure complexity.
 
+## 🔄 Execution Workflow
+
+For every task, follow:
+
+```text
+Understand
+→ Inspect
+→ Plan
+→ Implement
+→ Validate
+→ Document
+→ Report
+```
+
+### Before Making Changes
+
+- Read this `.agents/AGENTS.md`.
+- Inspect the current repository and relevant files.
+- Check the current Git branch and working tree.
+- Preserve unrelated user changes.
+- Do not assume a roadmap phase is incomplete if it is already documented as complete.
+- Do not repeat completed setup unless re-validation is required.
+- Identify whether the requested change affects networking, SSH, storage, Docker, Stardew runtime, or other critical infrastructure.
+
+### While Making Changes
+
+- Make the smallest reasonable change required for the task.
+- Do not introduce unrequested architecture or dependencies.
+- Do not overwrite working configuration without justification.
+- Do not invent configuration values that have not been verified.
+- Prefer reproducible configuration over manual one-off changes.
+- Explain destructive, connectivity-affecting, or irreversible operations before execution.
+- Stop and report unexpected results instead of stacking speculative fixes.
+
+### Validation
+
+Never mark a task or roadmap phase complete based only on successful command execution.
+
+Verify the resulting state with checks appropriate to the task. Examples include:
+
+```bash
+systemctl status <service>
+ip route
+docker ps
+docker compose ps
+```
+
+### Documentation
+
+Update documentation as part of the same logical task when a change introduces reusable operational knowledge.
+
+Use:
+
+- `docs/setup.md` for reproducible installation and setup procedures.
+- `docs/commands.md` for important reusable Raspberry Pi, Git, Docker, Stardew, and administration commands.
+- `docs/networking.md` for network architecture and persistent network configuration.
+- `docs/troubleshooting.md` for problems actually encountered, their root causes, diagnostic steps, and verified fixes.
+
+Do not duplicate large sections of information across multiple documentation files.
+
+### Command Documentation
+
+For important commands, document when relevant:
+
+- the command;
+- its purpose;
+- why it is needed;
+- important arguments;
+- whether its effect is temporary or persistent;
+- the expected result;
+- a verification command;
+- rollback or recovery information when applicable.
+
+Do not document every trivial shell command.
+
+### Roadmap Updates
+
+The roadmap represents verified project state.
+
+When a phase is fully validated:
+
+1. Mark the completed phase as `✅ Complete`.
+2. Mark the next active phase as `🔄 Current`.
+3. Update relevant documentation.
+4. Review the complete diff.
+5. Report the milestone to the user.
+
+Do not mark a phase complete when validation is still pending.
+
+### Git Milestones
+
+Do not create a commit for every command or minor edit. Prefer commits representing one verified logical milestone.
+
+```text
+Phase work
+→ validation
+→ documentation
+→ roadmap update
+→ review
+→ commit approval
+→ commit
+→ push approval
+→ push
+```
+
+Commit and push remain separate approval boundaries.
+
+### Task Completion Output
+
+At the end of a task, report:
+
+1. **Changed** — files or configuration modified.
+2. **Validated** — checks performed and their results.
+3. **Documentation** — documentation updated.
+4. **Git status** — current branch and working-tree state.
+5. **Next** — recommended next project step.
+
+Do not commit or push unless explicitly approved.
+
 ## 🗂️ Repository Role
 
 GitHub is the source of truth for:
