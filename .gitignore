@@ -1,0 +1,26 @@
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Stardew data
+saves/
+backups/
+data/
+
+# Logs
+logs/
+*.log
+
+# Docker runtime data
+docker-data/
+volumes/
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Temporary files
+*.tmp
+*.bak
