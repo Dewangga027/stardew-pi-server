@@ -93,3 +93,77 @@ the currently verified ICS subnet. Do not hand-edit `/etc/resolv.conf` while it
 is managed by Tailscale, because the edit may be overwritten and may hide the
 real source of the resolver configuration. Inspect the active NetworkManager
 profile and Tailscale state before selecting a persistent fix.
+
+## Docker permission denied
+
+### Problem
+
+Running:
+
+```bash
+docker ps
+```
+
+returned:
+
+```text
+permission denied while trying to connect to the docker API at unix:///var/run/docker.sock
+```
+
+### Diagnosis
+
+Check the current user's groups:
+
+```bash
+groups
+```
+
+The verified `ipp` session initially did not include the `docker` group.
+
+The Docker daemon was installed, but the user did not have permission to access
+its Unix socket.
+
+### Root cause
+
+The `ipp` administrative user was not a member of the `docker` group.
+
+### Fix
+
+Add the user:
+
+```bash
+sudo usermod -aG docker ipp
+```
+
+The change does not affect the current login session immediately.
+
+Start a new SSH session before testing again.
+
+### VS Code Remote SSH note
+
+An existing VS Code Remote SSH environment continued using the group membership
+from the old login session.
+
+Docker access worked from a newly opened SSH session but initially did not work
+inside the existing VS Code Remote SSH session.
+
+Reconnect the VS Code Remote SSH environment so that the remote session reloads
+the user's updated group membership.
+
+Verify:
+
+```bash
+groups
+docker ps
+```
+
+Expected result:
+
+- `docker` appears in the group list;
+- `docker ps` completes without a permission error.
+
+### Security note
+
+The Docker group provides highly privileged access to the Raspberry Pi.
+
+Only trusted administrative users should be added to this group.

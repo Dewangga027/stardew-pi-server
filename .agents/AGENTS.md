@@ -446,8 +446,8 @@ For breaking changes, add `!` after the type or scope and include a `BREAKING CH
 | 1 | Raspberry Pi validation | ✅ Complete |
 | 2 | Operating system preparation | ✅ Complete |
 | 3 | 24/7 reliability preparation | ✅ Complete |
-| 4 | Docker | 🔄 Current |
-| 5 | Stardew ARM64 compatibility | ⏳ |
+| 4 | Docker | ✅ Complete |
+| 5 | Stardew ARM64 compatibility | 🔄 Current |
 | 6 | Stardew server installation | ⏳ |
 | 7 | LAN multiplayer testing | ⏳ |
 | 8 | Backup system | ⏳ |

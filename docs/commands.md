@@ -69,3 +69,128 @@ No persistent network-modification command is included because the exact active
 connection profile and the command originally used to configure it have not
 been recorded in this repository. Inspect the current state first and document
 the actual change when a future configuration step is performed and verified.
+
+## Docker
+
+### Check Docker version
+
+```bash
+docker --version
+```
+
+Displays the installed Docker Engine CLI version.
+
+Use this to confirm that Docker is installed.
+
+### Check Docker Compose version
+
+```bash
+docker compose version
+```
+
+Displays the installed Docker Compose plugin version.
+
+Modern Docker installations use `docker compose` rather than the legacy
+`docker-compose` command.
+
+### List running containers
+
+```bash
+docker ps
+```
+
+Lists currently running containers.
+
+This also provides a simple check that the current user can communicate with
+the Docker daemon.
+
+### List all containers
+
+```bash
+docker ps -a
+```
+
+Lists running and stopped containers.
+
+Useful when investigating containers that exited unexpectedly.
+
+### Test the Docker runtime
+
+```bash
+docker run --rm hello-world
+```
+
+Pulls and runs Docker's test image.
+
+The command verifies the Docker daemon, image pull, container creation, and
+runtime execution.
+
+`--rm` removes the container automatically after it exits.
+
+### Check Docker service state
+
+```bash
+systemctl is-active docker
+```
+
+Expected result:
+
+```text
+active
+```
+
+Confirms that the Docker daemon is currently running.
+
+### Check Docker autostart
+
+```bash
+systemctl is-enabled docker
+```
+
+Expected result:
+
+```text
+enabled
+```
+
+Confirms that Docker is configured to start automatically during boot.
+
+### Check current user groups
+
+```bash
+groups
+```
+
+Displays the supplementary groups assigned to the current login session.
+
+For Docker administration, the `ipp` user should include:
+
+```text
+docker
+```
+
+### Inspect the Docker group
+
+```bash
+getent group docker
+```
+
+Displays the Docker group and its configured members.
+
+### Add an administrative user to the Docker group
+
+```bash
+sudo usermod -aG docker ipp
+```
+
+Adds `ipp` to the `docker` supplementary group.
+
+- `-a` appends the group without removing existing memberships.
+- `-G docker` adds the user to the Docker group.
+
+This change is persistent.
+
+The user must start a new login session before the new group membership becomes
+active.
+
+> Docker group membership grants highly privileged access to the host.
