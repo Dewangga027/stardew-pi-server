@@ -207,3 +207,93 @@ Phase 2 is considered complete when:
 - DNS and external connectivity return after reboot.
 
 The verified host can then proceed to 24/7 reliability preparation.
+
+## Phase 3 — 24/7 Reliability Preparation
+
+Phase 3 verifies that the Raspberry Pi host is healthy enough for continuous
+operation before Docker and the Stardew Valley runtime are introduced.
+
+### Verify power and thermal state
+
+```bash
+vcgencmd get_throttled
+vcgencmd measure_temp
+uptime
+```
+
+Verified results:
+
+```text
+throttled=0x0
+temp=45.5'C
+```
+
+`throttled=0x0` indicates that no throttling or undervoltage condition was
+reported during the check.
+
+The measured CPU temperature provides an idle baseline. Thermal behavior must
+be checked again after Docker and the Stardew server are running under load.
+
+### Verify remote services
+
+```bash
+systemctl is-enabled ssh
+systemctl is-enabled tailscaled
+```
+
+Verified result:
+
+```text
+enabled
+enabled
+```
+
+SSH and Tailscale are configured to start automatically during boot.
+
+### Verify storage and logging
+
+```bash
+df -h /
+journalctl --disk-usage
+systemctl is-enabled systemd-journald
+```
+
+Verified state:
+
+- Root filesystem: approximately 35% used with 18 GB available.
+- System journal usage: approximately 8 MB.
+- `systemd-journald`: `static`, which is valid for this service.
+
+The current microSD capacity is sufficient for the initial setup. Storage and
+log growth must be reviewed again after long-running services are deployed.
+
+### Verify the boot target
+
+```bash
+systemctl get-default
+```
+
+Verified result:
+
+```text
+graphical.target
+```
+
+The default boot target is currently left unchanged.
+
+Whether the server should later use `multi-user.target` will be reviewed after
+the Stardew runtime requirements are known.
+
+### Phase 3 verification
+
+Phase 3 is considered complete because:
+
+- no power or throttling warning was reported;
+- idle CPU temperature is healthy;
+- baseline system load is low;
+- SSH and Tailscale start automatically;
+- storage capacity is currently sufficient;
+- journal usage is small and controlled;
+- the current boot target is known and documented.
+
+The host is ready to proceed to Docker setup.
