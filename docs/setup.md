@@ -297,3 +297,124 @@ Phase 3 is considered complete because:
 - the current boot target is known and documented.
 
 The host is ready to proceed to Docker setup.
+
+## Phase 4 — Docker Setup
+
+Phase 4 verifies that Docker is installed and usable on the Raspberry Pi before
+the Stardew Valley server stack is introduced.
+
+### Verify Docker installation
+
+```bash
+docker --version
+docker compose version
+```
+
+Verified versions:
+
+```text
+Docker version 29.7.2
+Docker Compose version v5.5.0
+```
+
+The installed Docker packages use the native ARM64 architecture.
+
+Installed components include:
+
+- Docker Engine
+- Docker CLI
+- containerd
+- Docker Buildx
+- Docker Compose plugin
+
+### Verify Docker service
+
+```bash
+systemctl is-enabled docker
+systemctl is-active docker
+```
+
+Expected result:
+
+```text
+enabled
+active
+```
+
+This confirms that Docker is running and configured to start automatically
+during boot.
+
+### Configure Docker access for the admin user
+
+Initially, the `ipp` user could not access the Docker daemon:
+
+```text
+permission denied while trying to connect to the docker API at unix:///var/run/docker.sock
+```
+
+The user was not a member of the `docker` group.
+
+Add the administrative user:
+
+```bash
+sudo usermod -aG docker ipp
+```
+
+This is a persistent user configuration change.
+
+A new login session is required before the updated group membership becomes
+active.
+
+Verify:
+
+```bash
+groups
+docker ps
+```
+
+The `docker` group should appear in the user group list and `docker ps` should
+run without `sudo`.
+
+> Membership in the `docker` group provides highly privileged access to the
+> host. Only trusted administrative users should be added.
+
+### VS Code Remote SSH session
+
+After changing group membership, an existing VS Code Remote SSH session may
+continue using the old user-group information.
+
+Reconnect the Remote SSH session before testing Docker again.
+
+A completely new SSH session correctly reloads the user's group membership.
+
+### Verify container runtime
+
+Run:
+
+```bash
+docker run --rm hello-world
+```
+
+This verifies that Docker can:
+
+- communicate with the Docker daemon;
+- pull a compatible container image;
+- create and start a container;
+- execute the container runtime successfully.
+
+The `--rm` option automatically removes the test container after it exits.
+
+### Phase 4 verification
+
+Phase 4 is considered complete when:
+
+- Docker Engine is installed;
+- Docker Compose is available;
+- native ARM64 Docker packages are installed;
+- Docker is active;
+- Docker is enabled at boot;
+- the `ipp` user can access Docker without `sudo`;
+- `docker ps` works without permission errors;
+- the `hello-world` container runs successfully.
+
+The host is ready to proceed to Stardew Valley ARM64 compatibility evaluation.
