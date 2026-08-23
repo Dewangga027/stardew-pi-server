@@ -444,7 +444,7 @@ For breaking changes, add `!` after the type or scope and include a `BREAKING CH
 | Phase | Task | Status |
 |---|---|---|
 | 1 | Raspberry Pi validation | ✅ Complete |
-| 2 | Operating system preparation | 🔄 Current |
+| 2 | Operating system preparation | ✅ Complete |
 | 3 | 24/7 reliability preparation | ⏳ |
 | 4 | Docker | ⏳ |
 | 5 | Stardew ARM64 compatibility | ⏳ |
