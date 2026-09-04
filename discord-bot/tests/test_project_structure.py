@@ -66,3 +66,26 @@ def test_commands_are_moved_out_of_bot_py():
         "Still found:\n"
         + "\n".join(f"- {command}" for command in still_in_bot)
     )
+
+def test_all_command_modules_have_register():
+    from commands import docker_cmd
+    from commands import health
+    from commands import help as help_command
+    from commands import ping
+    from commands import status
+
+    modules = [
+        ping,
+        status,
+        health,
+        docker_cmd,
+        help_command,
+    ]
+
+    for module in modules:
+        register = getattr(module, "register", None)
+
+        assert callable(register), (
+            f"{module.__name__} harus memiliki "
+            "function register(bot, guild)"
+        )
