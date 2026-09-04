@@ -73,6 +73,7 @@ def test_all_command_modules_have_register():
     from commands import help as help_command
     from commands import ping
     from commands import status
+    from commands import stardew
 
     modules = [
         ping,
@@ -80,6 +81,7 @@ def test_all_command_modules_have_register():
         health,
         docker_cmd,
         help_command,
+        stardew,
     ]
 
     for module in modules:

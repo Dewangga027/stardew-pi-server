@@ -8,6 +8,7 @@ from commands import docker_cmd
 from commands import health
 from commands import help as help_command
 from commands import ping
+from commands import stardew
 from commands import status
 
 
@@ -66,6 +67,7 @@ status.register(bot, GUILD)
 health.register(bot, GUILD)
 docker_cmd.register(bot, GUILD)
 help_command.register(bot, GUILD)
+stardew.register(bot, GUILD)
 
 
 @bot.event
