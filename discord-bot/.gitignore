@@ -1,0 +1,5 @@
+# Discord Bot
+discord-bot/.env
+discord-bot/.venv/
+discord-bot/__pycache__/
+discord-bot/*.pyc
